@@ -1,0 +1,139 @@
+consumes:
+- application/json
+definitions:
+  RawPayload:
+    example:
+      check_id: 4563429d-ede0-40af-9cea-bc14124da0e9
+      raw: '{ raw : "BASE_64_FORMAT" }'
+      scan_id: 7f055e8b-a4f8-4cba-ac44-b840c3fd135e
+      scan_start_time: 2006-04-22T05:57:42Z
+    properties:
+      check_id:
+        description: Check UUID
+        example: 4563429d-ede0-40af-9cea-bc14124da0e9
+        format: uuid
+        type: string
+      raw:
+        description: Raw result of a Check. It's a JSON with a BASE64 encoded value
+          of the raw result
+        example: '{ raw : "BASE_64_FORMAT" }'
+        type: string
+      scan_id:
+        description: Scan UUID
+        example: 7f055e8b-a4f8-4cba-ac44-b840c3fd135e
+        format: uuid
+        type: string
+      scan_start_time:
+        description: Scan start time
+        example: 2006-04-22T05:57:42Z
+        format: date-time
+        type: string
+    title: RawPayload
+    type: object
+  ReportPayload:
+    example:
+      check_id: 160ed8bf-c724-473f-9c5a-9af6c56de8e5
+      report: '{ report : "{"report":"{\"check_id\":\"aabbccdd-abcd-0123-4567-abcdef012345\",
+        .....}}" }'
+      scan_id: 5597e194-641d-4320-b536-d965333f2c6d
+      scan_start_time: 1995-08-24T02:02:26Z
+    properties:
+      check_id:
+        description: Check UUID
+        example: 160ed8bf-c724-473f-9c5a-9af6c56de8e5
+        format: uuid
+        type: string
+      report:
+        description: Report of a Check. It's a JSON containing the value of the report
+        example: '{ report : "{"report":"{\"check_id\":\"aabbccdd-abcd-0123-4567-abcdef012345\",
+          .....}}" }'
+        minLength: 2
+        pattern: ^[[:print:]]+
+        type: string
+      scan_id:
+        description: Scan UUID
+        example: 5597e194-641d-4320-b536-d965333f2c6d
+        format: uuid
+        type: string
+      scan_start_time:
+        description: Scan start time
+        example: 1995-08-24T02:02:26Z
+        format: date-time
+        type: string
+    title: ReportPayload
+    type: object
+host: localhost:8080
+info:
+  description: A component to handle persistence service results storage
+  title: Vulcan Persistence Results Uploader
+  version: ""
+paths:
+  /healthcheck:
+    get:
+      description: Get the health status for the application
+      operationId: healthcheck#show
+      produces:
+      - text/plain
+      responses:
+        "200":
+          description: OK
+      schemes:
+      - http
+      summary: show healthcheck
+      tags:
+      - healthcheck
+  /v1/raw:
+    post:
+      description: Update the Raw of a Check
+      operationId: Results#raw
+      parameters:
+      - in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/RawPayload'
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+      schemes:
+      - http
+      summary: raw Results
+      tags:
+      - Results
+  /v1/report:
+    post:
+      description: Update the Report of a Check
+      operationId: Results#report
+      parameters:
+      - in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/ReportPayload'
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+      schemes:
+      - http
+      summary: report Results
+      tags:
+      - Results
+produces:
+- application/json
+- application/xml
+- application/gob
+- application/x-gob
+responses:
+  BadRequest:
+    description: Bad Request
+  Created:
+    description: Created
+  OK:
+    description: OK
+schemes:
+- http
+swagger: "2.0"
