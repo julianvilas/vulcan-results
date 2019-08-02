@@ -1,51 +1,35 @@
-# Vulcan Persistence Service
+# Vulcan Results Service
 
-## Installing dependencies
+## Requirements
+- go
+- dep
 
-Install mercurial `hg` client if not already installed. For example in OSX if you are using homebrew:
+## Build
 ```
-brew install hg
-```
-
-And get the dependencies:
-
-```
-go get -u github.com/goadesign/goa/...
-```
-
-## Code generation
-
-From the project directory (inside of `$GOPATH/src`) just run:
-
-```
-./build.sh
+go get -d -v github.com/adevinta/vulcan-results
+cd $GOPATH/src/github.com/adevinta/vulcan-results
+dep ensure -v
+go get ./...
 ```
 
-It must show a result like
-
+## Config file example:
+**config-example.toml**
 ```
-app
-app/contexts.go
-app/controllers.go
-app/hrefs.go
-app/media_types.go
-app/user_types.go
-app/test
-app/test/healthcheck_testing.go
-main.go
-healthcheck.go
-tool/vulcan-results-cli
-tool/vulcan-results-cli/main.go
-tool/cli
-tool/cli/commands.go
-client
-client/client.go
-client/healthcheck.go
-client/user_types.go
-client/media_types.go
-swagger
-swagger/swagger.json
-swagger/swagger.yaml
+# File where result logs are stored.
+# Leave empty (or remove) for STDOUT.
+LogFile = ""
+Port = 8888
+Debug = true
+
+[Storage]
+Region = "eu-west-1"
+BucketVulnerableReports = "my-vulnerable-reports-bucket"
+BucketReports = "my-reports-bucket"
+BucketLogs = "my-check-logs-bucket"
+LinkBase = "http://example.com/v1"
 ```
 
-You can also delete the auto-generated content executing `./clean.sh`.
+## Run
+```
+$GOPATH/bin/vulcan-results /path/to/config-example.toml
+```
