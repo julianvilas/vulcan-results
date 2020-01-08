@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"compress/gzip"
 	"fmt"
+	"io/ioutil"
 	"net/url"
 	"path"
 	"time"
@@ -28,6 +29,9 @@ type Config struct {
 type Storage interface {
 	SaveReports(scanID, checkID string, startedAt time.Time, report []byte, vulnerable bool) (link string, err error)
 	SaveLogs(scanID, checkID string, startedAt time.Time, logs []byte) (link string, err error)
+
+	GetReport(date, scanID, checkID string) ([]byte, error)
+	GetLog(date, scanID, checkID string) ([]byte, error)
 }
 
 // S3Storage implements the Storage interface storing the results in S3.
@@ -91,6 +95,22 @@ func (s *S3Storage) SaveLogs(scanID, checkID string, startedAt time.Time, logs [
 	return
 }
 
+// GetReport downloads from S3 and returns the report that corresponds
+// to the input params.
+func (s *S3Storage) GetReport(date, scanID, checkID string) ([]byte, error) {
+	key := fmt.Sprintf("%s/%s/%s", date, scanID, checkID)
+
+	return s.downloadFromBucket(s.Conf.BucketReports, key)
+}
+
+// GetLog downloads from S3 and returns the report that corresponds
+// to the input params.
+func (s *S3Storage) GetLog(date, scanID, checkID string) ([]byte, error) {
+	key := fmt.Sprintf("%s/%s/%s", date, scanID, checkID)
+
+	return s.downloadFromBucket(s.Conf.BucketLogs, key)
+}
+
 func (s *S3Storage) uploadToBucket(bucket, key string, content []byte, compress bool, contentType *string) (err error) {
 	if compress {
 		var buf bytes.Buffer
@@ -121,6 +141,26 @@ func (s *S3Storage) uploadToBucket(bucket, key string, content []byte, compress 
 	_, err = s.svc.PutObject(params)
 
 	return
+}
+
+func (s *S3Storage) downloadFromBucket(bucket, key string) ([]byte, error) {
+	s.logger.WithFields(logrus.Fields{
+		"key":    key,
+		"bucket": bucket,
+	}).Debug("downloading content from S3 bucket")
+
+	params := &s3.GetObjectInput{
+		Bucket: aws.String(bucket),
+		Key:    aws.String(key),
+	}
+
+	obj, err := s.svc.GetObject(params)
+	if err != nil {
+		return nil, err
+	}
+	defer obj.Body.Close()
+
+	return ioutil.ReadAll(obj.Body)
 }
 
 func urlConcat(baseURL string, toConcat ...string) (string, error) {

@@ -83,10 +83,14 @@ var testCasesRaw = []struct {
 
 type funcTestReport func(goatest.TInterface, context.Context, *goa.Service, app.ResultsController, *app.ReportPayload) http.ResponseWriter
 type funcTestRaw func(goatest.TInterface, context.Context, *goa.Service, app.ResultsController, *app.RawPayload) http.ResponseWriter
+type funcTestGetReport func(goatest.TInterface, context.Context, *goa.Service, app.ResultsController, string, string, string) http.ResponseWriter
+type funcTestGetLog func(goatest.TInterface, context.Context, *goa.Service, app.ResultsController, string, string, string) http.ResponseWriter
 
 type storageMock struct {
-	link string
-	err  error
+	link   string
+	report []byte
+	log    []byte
+	err    error
 }
 
 func (st storageMock) SaveLogs(checkID, scanID string, startedAt time.Time, raw []byte) (link string, err error) {
@@ -95,6 +99,14 @@ func (st storageMock) SaveLogs(checkID, scanID string, startedAt time.Time, raw 
 
 func (st storageMock) SaveReports(checkID, scanID string, startedAt time.Time, result []byte, compress bool) (link string, err error) {
 	return st.link, st.err
+}
+
+func (st storageMock) GetReport(date, scanID, checkID string) ([]byte, error) {
+	return st.report, st.err
+}
+
+func (st storageMock) GetLog(date, scanID, checkID string) ([]byte, error) {
+	return st.log, st.err
 }
 
 func ok(w http.ResponseWriter, r *http.Request) {
@@ -296,6 +308,122 @@ func TestSaveResult(t *testing.T) {
 				//TODO: fix this test
 				//t.Errorf("(%v) nilErr expected: %v, got error: %v", tc.name, tc.nilErr, err)
 			}
+		})
+	}
+}
+
+var testCasesGetReport = []struct {
+	name   string
+	date   string
+	scan   string
+	check  string
+	stMock storage.Storage
+	psMock http.HandlerFunc
+	psURL  string
+	f      funcTestGetReport
+}{
+	{
+		name:  "Happy path OK",
+		date:  "dt=2019-11-01",
+		scan:  "scan=9126034c-7caf-4acd-93f3-bee1941aa140",
+		check: "e0c1ac1a-1036-4e0e-b5cc-d18ae6673eb0.json",
+		stMock: storageMock{
+			report: []byte("myReport"),
+			err:    nil,
+		},
+		psMock: func(w http.ResponseWriter, r *http.Request) {},
+		f:      test.GetReportResultsOK,
+	},
+	{
+		name:  "Should return bad request",
+		date:  "dt=2019-11-01",
+		scan:  "scan=9126034c-7caf-4acd-93f3-bee1941aa140",
+		check: "e0c1ac1a-1036-4e0e-b5cc-d18ae6673eb0.json",
+		stMock: storageMock{
+			report: []byte("myReport"),
+			err:    errors.New("Error"),
+		},
+		psMock: func(w http.ResponseWriter, r *http.Request) {},
+		f:      test.GetReportResultsBadRequest,
+	},
+}
+
+func TestGetReport(t *testing.T) {
+	// Test all the test cases defined in testCasesGetReport
+	for _, tc := range testCasesGetReport {
+		tc := tc
+
+		t.Run(tc.name, func(t *testing.T) {
+			url := tc.psURL
+			if url == "" {
+				ts := httptest.NewServer(tc.psMock)
+				defer ts.Close()
+				url = ts.URL
+			}
+
+			service := goa.New("vulcan-results")
+
+			ctrl := NewResultsController(service, tc.stMock)
+
+			_ = tc.f(t, nil, service, ctrl, tc.date, tc.scan, tc.check)
+		})
+	}
+}
+
+var testCasesGetLog = []struct {
+	name   string
+	date   string
+	scan   string
+	check  string
+	stMock storage.Storage
+	psMock http.HandlerFunc
+	psURL  string
+	f      funcTestGetLog
+}{
+	{
+		name:  "Happy path OK",
+		date:  "dt=2019-11-01",
+		scan:  "scan=9126034c-7caf-4acd-93f3-bee1941aa140",
+		check: "e0c1ac1a-1036-4e0e-b5cc-d18ae6673eb0.json",
+		stMock: storageMock{
+			report: []byte("myLog"),
+			err:    nil,
+		},
+		psMock: func(w http.ResponseWriter, r *http.Request) {},
+		f:      test.GetLogResultsOK,
+	},
+	{
+		name:  "Should return bad request",
+		date:  "dt=2019-11-01",
+		scan:  "scan=9126034c-7caf-4acd-93f3-bee1941aa140",
+		check: "e0c1ac1a-1036-4e0e-b5cc-d18ae6673eb0.json",
+		stMock: storageMock{
+			report: []byte("myLog"),
+			err:    errors.New("Error"),
+		},
+		psMock: func(w http.ResponseWriter, r *http.Request) {},
+		f:      test.GetLogResultsBadRequest,
+	},
+}
+
+func TestGetLog(t *testing.T) {
+	// Test all the test cases defined in testCasesGetLog
+	for _, tc := range testCasesGetLog {
+		tc := tc
+
+		t.Run(tc.name, func(t *testing.T) {
+			url := tc.psURL
+			if url == "" {
+				ts := httptest.NewServer(tc.psMock)
+				defer ts.Close()
+				url = ts.URL
+			}
+
+			service := goa.New("vulcan-results")
+
+			ctrl := NewResultsController(service, tc.stMock)
+
+			_ = tc.f(t, nil, service, ctrl, tc.date, tc.scan, tc.check)
 		})
 	}
 }

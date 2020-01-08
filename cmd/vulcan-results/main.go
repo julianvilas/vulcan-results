@@ -85,10 +85,11 @@ func main() {
 	}
 
 	st := storage.NewS3Storage(config.Storage, logger, svc)
+
 	c := api.NewResultsController(service, st)
 	app.MountResultsController(service, c)
 
-	// Mount "healthcheck" controller
+	// Healthcheck controller
 	c2 := api.NewHealthcheckController(service)
 	app.MountHealthcheckController(service, c2)
 

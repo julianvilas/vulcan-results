@@ -20,6 +20,7 @@ import (
 	uuid "github.com/goadesign/goa/uuid"
 	"github.com/spf13/cobra"
 	"log"
+	"net/url"
 	"os"
 	"strconv"
 	"strings"
@@ -27,6 +28,28 @@ import (
 )
 
 type (
+	// GetLogResultsCommand is the command line data structure for the getLog action of Results
+	GetLogResultsCommand struct {
+		// Check ID
+		Check string
+		// Report date
+		Date string
+		// Scan ID
+		Scan        string
+		PrettyPrint bool
+	}
+
+	// GetReportResultsCommand is the command line data structure for the getReport action of Results
+	GetReportResultsCommand struct {
+		// Check ID
+		Check string
+		// Report date
+		Date string
+		// Scan ID
+		Scan        string
+		PrettyPrint bool
+	}
+
 	// RawResultsCommand is the command line data structure for the raw action of Results
 	RawResultsCommand struct {
 		Payload     string
@@ -51,10 +74,38 @@ type (
 func RegisterCommands(app *cobra.Command, c *client.Client) {
 	var command, sub *cobra.Command
 	command = &cobra.Command{
+		Use:   "get-log",
+		Short: `Download a log`,
+	}
+	tmp1 := new(GetLogResultsCommand)
+	sub = &cobra.Command{
+		Use:   `results ["/v1/logs/DATE/SCAN/CHECK"]`,
+		Short: ``,
+		RunE:  func(cmd *cobra.Command, args []string) error { return tmp1.Run(c, args) },
+	}
+	tmp1.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp1.PrettyPrint, "pp", false, "Pretty print response body")
+	command.AddCommand(sub)
+	app.AddCommand(command)
+	command = &cobra.Command{
+		Use:   "get-report",
+		Short: `Download a report`,
+	}
+	tmp2 := new(GetReportResultsCommand)
+	sub = &cobra.Command{
+		Use:   `results ["/v1/reports/DATE/SCAN/CHECK"]`,
+		Short: ``,
+		RunE:  func(cmd *cobra.Command, args []string) error { return tmp2.Run(c, args) },
+	}
+	tmp2.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp2.PrettyPrint, "pp", false, "Pretty print response body")
+	command.AddCommand(sub)
+	app.AddCommand(command)
+	command = &cobra.Command{
 		Use:   "raw",
 		Short: `Update the Raw of a Check`,
 	}
-	tmp1 := new(RawResultsCommand)
+	tmp3 := new(RawResultsCommand)
 	sub = &cobra.Command{
 		Use:   `results ["/v1/raw"]`,
 		Short: ``,
@@ -63,22 +114,22 @@ func RegisterCommands(app *cobra.Command, c *client.Client) {
 Payload example:
 
 {
-   "check_id": "a3920778-5158-4752-b040-2bdaf44c60f6",
+   "check_id": "b06eb936-c9cb-4bc9-93c1-79537a461d80",
    "raw": "{ raw : \"BASE_64_FORMAT\" }",
-   "scan_id": "7a5359d0-a990-4dea-ad4e-3703fd8a5bd2",
+   "scan_id": "c9d971e7-4972-4e86-8e7f-8f21856cd4f6",
    "scan_start_time": "2006-04-22T05:57:42Z"
 }`,
-		RunE: func(cmd *cobra.Command, args []string) error { return tmp1.Run(c, args) },
+		RunE: func(cmd *cobra.Command, args []string) error { return tmp3.Run(c, args) },
 	}
-	tmp1.RegisterFlags(sub, c)
-	sub.PersistentFlags().BoolVar(&tmp1.PrettyPrint, "pp", false, "Pretty print response body")
+	tmp3.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp3.PrettyPrint, "pp", false, "Pretty print response body")
 	command.AddCommand(sub)
 	app.AddCommand(command)
 	command = &cobra.Command{
 		Use:   "report",
 		Short: `Update the Report of a Check`,
 	}
-	tmp2 := new(ReportResultsCommand)
+	tmp4 := new(ReportResultsCommand)
 	sub = &cobra.Command{
 		Use:   `results ["/v1/report"]`,
 		Short: ``,
@@ -87,29 +138,29 @@ Payload example:
 Payload example:
 
 {
-   "check_id": "1efc2c7a-c02f-460f-8387-622a98f58436",
+   "check_id": "8d7080c9-c69b-4b84-9e3d-6b56aee98891",
    "report": "{ report : \"{\"report\":\"{\\\"check_id\\\":\\\"aabbccdd-abcd-0123-4567-abcdef012345\\\", .....}}\" }",
-   "scan_id": "6119e708-e4ba-40f5-8b67-646590329310",
+   "scan_id": "0b2bf773-c7bb-4dc8-9596-db2316200886",
    "scan_start_time": "1995-08-24T02:02:26Z"
 }`,
-		RunE: func(cmd *cobra.Command, args []string) error { return tmp2.Run(c, args) },
+		RunE: func(cmd *cobra.Command, args []string) error { return tmp4.Run(c, args) },
 	}
-	tmp2.RegisterFlags(sub, c)
-	sub.PersistentFlags().BoolVar(&tmp2.PrettyPrint, "pp", false, "Pretty print response body")
+	tmp4.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp4.PrettyPrint, "pp", false, "Pretty print response body")
 	command.AddCommand(sub)
 	app.AddCommand(command)
 	command = &cobra.Command{
 		Use:   "show",
 		Short: `Get the health status for the application`,
 	}
-	tmp3 := new(ShowHealthcheckCommand)
+	tmp5 := new(ShowHealthcheckCommand)
 	sub = &cobra.Command{
 		Use:   `healthcheck ["/healthcheck"]`,
 		Short: ``,
-		RunE:  func(cmd *cobra.Command, args []string) error { return tmp3.Run(c, args) },
+		RunE:  func(cmd *cobra.Command, args []string) error { return tmp5.Run(c, args) },
 	}
-	tmp3.RegisterFlags(sub, c)
-	sub.PersistentFlags().BoolVar(&tmp3.PrettyPrint, "pp", false, "Pretty print response body")
+	tmp5.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp5.PrettyPrint, "pp", false, "Pretty print response body")
 	command.AddCommand(sub)
 	app.AddCommand(command)
 }
@@ -265,6 +316,66 @@ func boolArray(ins []string) ([]bool, error) {
 		vals = append(vals, *val)
 	}
 	return vals, nil
+}
+
+// Run makes the HTTP request corresponding to the GetLogResultsCommand command.
+func (cmd *GetLogResultsCommand) Run(c *client.Client, args []string) error {
+	var path string
+	if len(args) > 0 {
+		path = args[0]
+	} else {
+		path = fmt.Sprintf("/v1/logs/%v/%v/%v", url.QueryEscape(cmd.Date), url.QueryEscape(cmd.Scan), url.QueryEscape(cmd.Check))
+	}
+	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
+	ctx := goa.WithLogger(context.Background(), logger)
+	resp, err := c.GetLogResults(ctx, path)
+	if err != nil {
+		goa.LogError(ctx, "failed", "err", err)
+		return err
+	}
+
+	goaclient.HandleResponse(c.Client, resp, cmd.PrettyPrint)
+	return nil
+}
+
+// RegisterFlags registers the command flags with the command line.
+func (cmd *GetLogResultsCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
+	var check string
+	cc.Flags().StringVar(&cmd.Check, "check", check, `Check ID`)
+	var date string
+	cc.Flags().StringVar(&cmd.Date, "date", date, `Report date`)
+	var scan string
+	cc.Flags().StringVar(&cmd.Scan, "scan", scan, `Scan ID`)
+}
+
+// Run makes the HTTP request corresponding to the GetReportResultsCommand command.
+func (cmd *GetReportResultsCommand) Run(c *client.Client, args []string) error {
+	var path string
+	if len(args) > 0 {
+		path = args[0]
+	} else {
+		path = fmt.Sprintf("/v1/reports/%v/%v/%v", url.QueryEscape(cmd.Date), url.QueryEscape(cmd.Scan), url.QueryEscape(cmd.Check))
+	}
+	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
+	ctx := goa.WithLogger(context.Background(), logger)
+	resp, err := c.GetReportResults(ctx, path)
+	if err != nil {
+		goa.LogError(ctx, "failed", "err", err)
+		return err
+	}
+
+	goaclient.HandleResponse(c.Client, resp, cmd.PrettyPrint)
+	return nil
+}
+
+// RegisterFlags registers the command flags with the command line.
+func (cmd *GetReportResultsCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
+	var check string
+	cc.Flags().StringVar(&cmd.Check, "check", check, `Check ID`)
+	var date string
+	cc.Flags().StringVar(&cmd.Date, "date", date, `Report date`)
+	var scan string
+	cc.Flags().StringVar(&cmd.Scan, "scan", scan, `Scan ID`)
 }
 
 // Run makes the HTTP request corresponding to the RawResultsCommand command.

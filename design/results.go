@@ -25,6 +25,30 @@ var _ = Resource("Results", func() {
 		Response(Created)
 		Response(BadRequest)
 	})
+
+	Action("getReport", func() {
+		Routing(GET("/reports/:date/:scan/:check"))
+		Description("Download a report")
+		Params(func() {
+			Param("date", String, "Report date")
+			Param("scan", String, "Scan ID")
+			Param("check", String, "Check ID")
+		})
+		Response(OK)
+		Response(BadRequest)
+	})
+
+	Action("getLog", func() {
+		Routing(GET("/logs/:date/:scan/:check"))
+		Description("Download a log")
+		Params(func() {
+			Param("date", String, "Report date")
+			Param("scan", String, "Scan ID")
+			Param("check", String, "Check ID")
+		})
+		Response(OK)
+		Response(BadRequest)
+	})
 })
 
 var ReportPayload = Type("ReportPayload", func() {

@@ -1,0 +1,12 @@
+# File where result logs are stored.
+# Leave empty (or remove) for STDOUT.
+LogFile = ""
+Port = $PORT
+Debug = $DEBUG
+
+[Storage]
+Region = "$AWS_REGION"
+BucketReports = "$BUCKET_REPORTS"
+BucketVulnerableReports = "$BUCKET_REPORTS"
+BucketLogs = "$BUCKET_LOGS"
+LinkBase = "$LINK_BASE"

@@ -18,6 +18,70 @@ import (
 	"net/url"
 )
 
+// GetLogResultsPath computes a request path to the getLog action of Results.
+func GetLogResultsPath(date string, scan string, check string) string {
+	param0 := date
+	param1 := scan
+	param2 := check
+
+	return fmt.Sprintf("/v1/logs/%s/%s/%s", param0, param1, param2)
+}
+
+// Download a log
+func (c *Client) GetLogResults(ctx context.Context, path string) (*http.Response, error) {
+	req, err := c.NewGetLogResultsRequest(ctx, path)
+	if err != nil {
+		return nil, err
+	}
+	return c.Client.Do(ctx, req)
+}
+
+// NewGetLogResultsRequest create the request corresponding to the getLog action endpoint of the Results resource.
+func (c *Client) NewGetLogResultsRequest(ctx context.Context, path string) (*http.Request, error) {
+	scheme := c.Scheme
+	if scheme == "" {
+		scheme = "http"
+	}
+	u := url.URL{Host: c.Host, Scheme: scheme, Path: path}
+	req, err := http.NewRequest("GET", u.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// GetReportResultsPath computes a request path to the getReport action of Results.
+func GetReportResultsPath(date string, scan string, check string) string {
+	param0 := date
+	param1 := scan
+	param2 := check
+
+	return fmt.Sprintf("/v1/reports/%s/%s/%s", param0, param1, param2)
+}
+
+// Download a report
+func (c *Client) GetReportResults(ctx context.Context, path string) (*http.Response, error) {
+	req, err := c.NewGetReportResultsRequest(ctx, path)
+	if err != nil {
+		return nil, err
+	}
+	return c.Client.Do(ctx, req)
+}
+
+// NewGetReportResultsRequest create the request corresponding to the getReport action endpoint of the Results resource.
+func (c *Client) NewGetReportResultsRequest(ctx context.Context, path string) (*http.Request, error) {
+	scheme := c.Scheme
+	if scheme == "" {
+		scheme = "http"
+	}
+	u := url.URL{Host: c.Host, Scheme: scheme, Path: path}
+	req, err := http.NewRequest("GET", u.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // RawResultsPath computes a request path to the raw action of Results.
 func RawResultsPath() string {
 

@@ -32,6 +32,8 @@ func initService(service *goa.Service) {
 // ResultsController is the controller interface for the Results actions.
 type ResultsController interface {
 	goa.Muxer
+	GetLog(*GetLogResultsContext) error
+	GetReport(*GetReportResultsContext) error
 	Raw(*RawResultsContext) error
 	Report(*ReportResultsContext) error
 }
@@ -40,6 +42,36 @@ type ResultsController interface {
 func MountResultsController(service *goa.Service, ctrl ResultsController) {
 	initService(service)
 	var h goa.Handler
+
+	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
+		// Check if there was an error loading the request
+		if err := goa.ContextError(ctx); err != nil {
+			return err
+		}
+		// Build the context
+		rctx, err := NewGetLogResultsContext(ctx, req, service)
+		if err != nil {
+			return err
+		}
+		return ctrl.GetLog(rctx)
+	}
+	service.Mux.Handle("GET", "/v1/logs/:date/:scan/:check", ctrl.MuxHandler("getLog", h, nil))
+	service.LogInfo("mount", "ctrl", "Results", "action", "GetLog", "route", "GET /v1/logs/:date/:scan/:check")
+
+	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
+		// Check if there was an error loading the request
+		if err := goa.ContextError(ctx); err != nil {
+			return err
+		}
+		// Build the context
+		rctx, err := NewGetReportResultsContext(ctx, req, service)
+		if err != nil {
+			return err
+		}
+		return ctrl.GetReport(rctx)
+	}
+	service.Mux.Handle("GET", "/v1/reports/:date/:scan/:check", ctrl.MuxHandler("getReport", h, nil))
+	service.LogInfo("mount", "ctrl", "Results", "action", "GetReport", "route", "GET /v1/reports/:date/:scan/:check")
 
 	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 		// Check if there was an error loading the request

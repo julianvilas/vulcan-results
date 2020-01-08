@@ -8,9 +8,9 @@ import (
 	"time"
 
 	report "github.com/adevinta/vulcan-report"
-	"github.com/goadesign/goa"
 	"github.com/adevinta/vulcan-results/app"
 	"github.com/adevinta/vulcan-results/storage"
+	"github.com/goadesign/goa"
 )
 
 type Check struct {
@@ -63,6 +63,36 @@ func (c *ResultsController) Raw(ctx *app.RawResultsContext) error {
 		goa.LogInfo(ctx, "Raw logs uploaded to S3", "link", link)
 		ctx.ResponseData.Header().Add("Location", link)
 		return ctx.Created()
+	}
+
+	goa.LogError(ctx, err.Error())
+	return ctx.BadRequest()
+}
+
+// GetReport runs the getReport action.
+func (c *ResultsController) GetReport(ctx *app.GetReportResultsContext) error {
+	goa.LogInfo(ctx, "Downloading report from S3",
+		"date", ctx.Date, "scan", ctx.Scan, "check", ctx.Check)
+
+	report, err := c.storage.GetReport(ctx.Date, ctx.Scan, ctx.Check)
+	if err == nil {
+		goa.LogInfo(ctx, "Report downloaded from S3")
+		return ctx.OK(report)
+	}
+
+	goa.LogError(ctx, err.Error())
+	return ctx.BadRequest()
+}
+
+// GetLog runs the getLog action.
+func (c *ResultsController) GetLog(ctx *app.GetLogResultsContext) error {
+	goa.LogInfo(ctx, "Downloading log from S3",
+		"date", ctx.Date, "scan", ctx.Scan, "check", ctx.Check)
+
+	log, err := c.storage.GetLog(ctx.Date, ctx.Scan, ctx.Check)
+	if err == nil {
+		goa.LogInfo(ctx, "Log downloaded from S3")
+		return ctx.OK(log)
 	}
 
 	goa.LogError(ctx, err.Error())

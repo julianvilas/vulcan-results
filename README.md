@@ -33,3 +33,26 @@ LinkBase = "http://example.com/v1"
 ```
 $GOPATH/bin/vulcan-results /path/to/config-example.toml
 ```
+
+# Docker execute
+
+Those are the variables you have to use:
+
+|Variable|Description|Sample|
+|---|---|---|
+|PORT|Listen http port|8080|
+|DEBUG||true|
+|AWS_REGION|aws region|eu-west-1|
+|BUCKET_REPORTS|Bucket name to store reports|bucket-reports|
+|BUCKET_LOGS|Buckent name to store logs|bucket-logs|
+|LINK_BASE|URL used for TBD|http://results/v1|
+
+```bash
+docker build . -t vr
+
+# Use the default config.toml customized with env variables.
+docker run --env-file ./local.env vr
+
+# Use custom config.toml
+docker run -v `pwd`/custom.toml:/app/config.toml vr
+```

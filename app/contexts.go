@@ -16,6 +16,112 @@ import (
 	"net/http"
 )
 
+// GetLogResultsContext provides the Results getLog action context.
+type GetLogResultsContext struct {
+	context.Context
+	*goa.ResponseData
+	*goa.RequestData
+	Check string
+	Date  string
+	Scan  string
+}
+
+// NewGetLogResultsContext parses the incoming request URL and body, performs validations and creates the
+// context used by the Results controller getLog action.
+func NewGetLogResultsContext(ctx context.Context, r *http.Request, service *goa.Service) (*GetLogResultsContext, error) {
+	var err error
+	resp := goa.ContextResponse(ctx)
+	resp.Service = service
+	req := goa.ContextRequest(ctx)
+	req.Request = r
+	rctx := GetLogResultsContext{Context: ctx, ResponseData: resp, RequestData: req}
+	paramCheck := req.Params["check"]
+	if len(paramCheck) > 0 {
+		rawCheck := paramCheck[0]
+		rctx.Check = rawCheck
+	}
+	paramDate := req.Params["date"]
+	if len(paramDate) > 0 {
+		rawDate := paramDate[0]
+		rctx.Date = rawDate
+	}
+	paramScan := req.Params["scan"]
+	if len(paramScan) > 0 {
+		rawScan := paramScan[0]
+		rctx.Scan = rawScan
+	}
+	return &rctx, err
+}
+
+// OK sends a HTTP response with status code 200.
+func (ctx *GetLogResultsContext) OK(resp []byte) error {
+	if ctx.ResponseData.Header().Get("Content-Type") == "" {
+		ctx.ResponseData.Header().Set("Content-Type", "text/plain")
+	}
+	ctx.ResponseData.WriteHeader(200)
+	_, err := ctx.ResponseData.Write(resp)
+	return err
+}
+
+// BadRequest sends a HTTP response with status code 400.
+func (ctx *GetLogResultsContext) BadRequest() error {
+	ctx.ResponseData.WriteHeader(400)
+	return nil
+}
+
+// GetReportResultsContext provides the Results getReport action context.
+type GetReportResultsContext struct {
+	context.Context
+	*goa.ResponseData
+	*goa.RequestData
+	Check string
+	Date  string
+	Scan  string
+}
+
+// NewGetReportResultsContext parses the incoming request URL and body, performs validations and creates the
+// context used by the Results controller getReport action.
+func NewGetReportResultsContext(ctx context.Context, r *http.Request, service *goa.Service) (*GetReportResultsContext, error) {
+	var err error
+	resp := goa.ContextResponse(ctx)
+	resp.Service = service
+	req := goa.ContextRequest(ctx)
+	req.Request = r
+	rctx := GetReportResultsContext{Context: ctx, ResponseData: resp, RequestData: req}
+	paramCheck := req.Params["check"]
+	if len(paramCheck) > 0 {
+		rawCheck := paramCheck[0]
+		rctx.Check = rawCheck
+	}
+	paramDate := req.Params["date"]
+	if len(paramDate) > 0 {
+		rawDate := paramDate[0]
+		rctx.Date = rawDate
+	}
+	paramScan := req.Params["scan"]
+	if len(paramScan) > 0 {
+		rawScan := paramScan[0]
+		rctx.Scan = rawScan
+	}
+	return &rctx, err
+}
+
+// OK sends a HTTP response with status code 200.
+func (ctx *GetReportResultsContext) OK(resp []byte) error {
+	if ctx.ResponseData.Header().Get("Content-Type") == "" {
+		ctx.ResponseData.Header().Set("Content-Type", "text/plain")
+	}
+	ctx.ResponseData.WriteHeader(200)
+	_, err := ctx.ResponseData.Write(resp)
+	return err
+}
+
+// BadRequest sends a HTTP response with status code 400.
+func (ctx *GetReportResultsContext) BadRequest() error {
+	ctx.ResponseData.WriteHeader(400)
+	return nil
+}
+
 // RawResultsContext provides the Results raw action context.
 type RawResultsContext struct {
 	context.Context
