@@ -11,7 +11,7 @@ import (
 
 	"github.com/goadesign/goa"
 	"github.com/goadesign/goa/goatest"
-	uuid "github.com/satori/go.uuid"
+	uuid "github.com/gofrs/uuid"
 
 	"github.com/adevinta/vulcan-results/app"
 	"github.com/adevinta/vulcan-results/app/test"

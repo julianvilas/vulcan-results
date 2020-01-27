@@ -3,14 +3,14 @@ consumes:
 definitions:
   RawPayload:
     example:
-      check_id: 444d57fe-f85c-469f-997a-b62a14ab64a4
+      check_id: 2b4fc914-7a4d-4ccc-84c7-55487a5e2160
       raw: '{ raw : "BASE_64_FORMAT" }'
-      scan_id: 62676116-e940-48bc-8c2c-0902c527a1a4
+      scan_id: bc9ed768-41bb-43ac-9318-cf00f4f9536e
       scan_start_time: "2006-04-22T05:57:42Z"
     properties:
       check_id:
         description: Check UUID
-        example: 444d57fe-f85c-469f-997a-b62a14ab64a4
+        example: 2b4fc914-7a4d-4ccc-84c7-55487a5e2160
         format: uuid
         type: string
       raw:
@@ -20,7 +20,7 @@ definitions:
         type: string
       scan_id:
         description: Scan UUID
-        example: 62676116-e940-48bc-8c2c-0902c527a1a4
+        example: bc9ed768-41bb-43ac-9318-cf00f4f9536e
         format: uuid
         type: string
       scan_start_time:
@@ -32,15 +32,15 @@ definitions:
     type: object
   ReportPayload:
     example:
-      check_id: f7201c56-42e7-47b9-9186-e04f66f48721
+      check_id: 3f5bc07d-6f9c-4f20-893c-03b8ea828df1
       report: '{ report : "{"report":"{\"check_id\":\"aabbccdd-abcd-0123-4567-abcdef012345\",
         .....}}" }'
-      scan_id: fde5d3fd-6c79-4195-a41c-34042c331aec
+      scan_id: 92ddbc0f-c216-4d18-92f7-9a1d27a4e773
       scan_start_time: "1995-08-24T02:02:26Z"
     properties:
       check_id:
         description: Check UUID
-        example: f7201c56-42e7-47b9-9186-e04f66f48721
+        example: 3f5bc07d-6f9c-4f20-893c-03b8ea828df1
         format: uuid
         type: string
       report:
@@ -52,7 +52,7 @@ definitions:
         type: string
       scan_id:
         description: Scan UUID
-        example: fde5d3fd-6c79-4195-a41c-34042c331aec
+        example: 92ddbc0f-c216-4d18-92f7-9a1d27a4e773
         format: uuid
         type: string
       scan_start_time:
