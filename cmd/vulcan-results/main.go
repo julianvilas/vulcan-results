@@ -81,7 +81,7 @@ func main() {
 	svc := s3.New(sess)
 
 	if len(config.Storage.Endpoint) > 0 {
-		svc = s3.New(sess, aws.NewConfig().WithEndpoint(config.Storage.Endpoint))
+		svc = s3.New(sess, aws.NewConfig().WithEndpoint(config.Storage.Endpoint).WithS3ForcePathStyle(config.Storage.PathStyle))
 	}
 
 	st := storage.NewS3Storage(config.Storage, logger, svc)
