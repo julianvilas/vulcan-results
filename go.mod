@@ -4,6 +4,7 @@ go 1.13
 
 require (
 	github.com/BurntSushi/toml v0.3.1
+	github.com/adevinta/vulcan-metrics-client v0.0.0-20200617105830-6078a0e12ebd
 	github.com/adevinta/vulcan-report v0.0.0-20190503133936-d8a2d4cb18ff
 	github.com/armon/go-metrics v0.0.0-20171117184120-7aa49fde8082 // indirect
 	github.com/aws/aws-sdk-go v1.12.70
@@ -23,7 +24,6 @@ require (
 	github.com/onsi/gomega v1.8.1 // indirect
 	github.com/pascaldekloe/goe v0.1.0 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
-	github.com/satori/go.uuid v1.2.1-0.20180103174451-36e9d2ebbde5
 	github.com/sirupsen/logrus v1.0.4
 	github.com/smartystreets/goconvey v1.6.4 // indirect
 	github.com/spf13/cobra v0.0.5

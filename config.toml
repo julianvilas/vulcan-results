@@ -12,3 +12,6 @@ BucketLogs = "$BUCKET_LOGS"
 LinkBase = "$LINK_BASE"
 Endpoint = "$AWS_S3_ENDPOINT"
 PathStyle = $PATH_STYLE
+
+[metrics]
+enabled = $DOGSTATSD_ENABLED

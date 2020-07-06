@@ -10,9 +10,6 @@ import (
 	"os"
 
 	"github.com/BurntSushi/toml"
-	api "github.com/adevinta/vulcan-results"
-	"github.com/adevinta/vulcan-results/app"
-	"github.com/adevinta/vulcan-results/storage"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
@@ -20,6 +17,12 @@ import (
 	goalogrus "github.com/goadesign/goa/logging/logrus"
 	"github.com/goadesign/goa/middleware"
 	"github.com/sirupsen/logrus"
+
+	vmetrics "github.com/adevinta/vulcan-metrics-client"
+	api "github.com/adevinta/vulcan-results"
+	"github.com/adevinta/vulcan-results/app"
+	"github.com/adevinta/vulcan-results/metrics"
+	"github.com/adevinta/vulcan-results/storage"
 )
 
 //Config represents the configuration for vulcan-results
@@ -29,6 +32,7 @@ type Config struct {
 	Debug   bool
 
 	Storage storage.Config `toml:"Storage"`
+	Metrics metrics.Config `toml:"metrics"`
 }
 
 func main() {
@@ -66,11 +70,21 @@ func main() {
 	service := goa.New("vulcan-results")
 	service.WithLogger(goalogrus.FromEntry(logger))
 
+	// Create metrics client
+	metricsClient, err := vmetrics.NewClient()
+	if err != nil {
+		service.LogError("metrics client", "err", err)
+		panic(err)
+	}
+
 	// Mount middleware
 	service.Use(middleware.RequestID())
 	service.Use(middleware.LogRequest(config.Debug == true))
 	service.Use(middleware.ErrorHandler(service, true))
 	service.Use(middleware.Recover())
+	if config.Metrics.Enabled {
+		service.Use(metrics.NewMiddleware(metricsClient))
+	}
 
 	// Mount "Results" controller
 	sess, err := session.NewSession(&aws.Config{Region: &config.Storage.Region})
