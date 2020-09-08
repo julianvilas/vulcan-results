@@ -1,0 +1,18 @@
+source_path: ./**/*
+shared_cache: true
+ignored:
+  go:
+    - github.mpi-internal.com/**/*
+allowed:
+  - mit
+  - apache-2.0
+  - bsd-2-clause
+  - bsd-3-clause
+reviewed:
+  go:
+    - golang.org/x/crypto/ssh/terminal
+    - golang.org/x/net/websocket
+    - golang.org/x/sys/unix
+    - github.com/dimfeld/httppath
+    - github.com/go-ini/ini
+    - github.com/jmespath/go-jmespath
