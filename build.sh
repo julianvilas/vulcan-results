@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Copyright 2019 Adevinta
+
 set -e
 
 # Ensure the current version of gogen is installed
