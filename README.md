@@ -1,15 +1,25 @@
 # Vulcan Results Service
 
 ## Requirements
-- go
-- dep
+- go 1.13.x
 
-## Build
+## Build & Install
 ```
-go get -d -v github.com/adevinta/vulcan-results
-cd $GOPATH/src/github.com/adevinta/vulcan-results
-dep ensure -v
-go get ./...
+GO111MODULE=on go get github.com/adevinta/vulcan-results/cmd/vulcan-result
+```
+
+## Build, regenerate code from Goa DSL & install in a Docker container
+```
+docker run -ti golang:1.13-alpine /bin/sh
+apk add git
+# Cloning out of the GOPATH
+cd /tmp
+git clone git://github.com/adevinta/vulcan-results.git
+cd vulcan-results
+go mod download
+go install github.com/goadesign/goa/goagen
+sh clean.sh
+sh build.sh
 ```
 
 ## Config file example:
