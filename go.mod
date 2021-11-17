@@ -5,7 +5,7 @@ go 1.13
 require (
 	github.com/BurntSushi/toml v0.3.1
 	github.com/adevinta/vulcan-metrics-client v0.0.0-20200617105830-6078a0e12ebd
-	github.com/adevinta/vulcan-report v0.0.0-20210830131559-d13f81ad6b01
+	github.com/adevinta/vulcan-report v0.0.0-20211117082128-cadc974cc14c
 	github.com/armon/go-metrics v0.0.0-20171117184120-7aa49fde8082 // indirect
 	github.com/aws/aws-sdk-go v1.12.70
 	github.com/dimfeld/httppath v0.0.0-20170720192232-ee938bf73598 // indirect
