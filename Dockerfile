@@ -10,7 +10,7 @@ RUN go mod download
 COPY . .
 RUN CGO_ENABLED=1 go install -a -tags netgo -ldflags '-w' ./...
 
-FROM alpine:3.16.2
+FROM alpine:3.16.3
 
 RUN apk add --no-cache --update gettext ca-certificates
 
