@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/BurntSushi/toml v0.3.1
-	github.com/adevinta/vulcan-metrics-client v1.0.0
+	github.com/adevinta/vulcan-metrics-client v1.0.1
 	github.com/adevinta/vulcan-report v1.0.0
 	github.com/aws/aws-sdk-go v1.44.98
 	github.com/goadesign/goa v1.4.3
@@ -34,6 +34,6 @@ require (
 	github.com/spf13/pflag v1.0.3 // indirect
 	github.com/zach-klippenstein/goregen v0.0.0-20160303162051-795b5e3961ea // indirect
 	golang.org/x/net v0.6.0 // indirect
-	golang.org/x/sys v0.5.0 // indirect
+	golang.org/x/sys v0.7.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
