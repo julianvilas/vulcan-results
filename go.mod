@@ -10,7 +10,7 @@ require (
 	github.com/goadesign/goa v1.4.3
 	github.com/gofrs/uuid v4.4.0+incompatible
 	github.com/sirupsen/logrus v1.9.3
-	github.com/spf13/cobra v0.0.5
+	github.com/spf13/cobra v1.7.0
 )
 
 require (
@@ -23,7 +23,7 @@ require (
 	github.com/hashicorp/go-immutable-radix v0.0.0-20180129170900-7f3cd4390caa // indirect
 	github.com/hashicorp/go-uuid v1.0.2 // indirect
 	github.com/hashicorp/golang-lru v0.0.0-20160813221303-0a025b7e63ad // indirect
-	github.com/inconshreveable/mousetrap v1.0.0 // indirect
+	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/manveru/faker v0.0.0-20171103152722-9fbc68a78c4d // indirect
 	github.com/manveru/gobdd v0.0.0-20131210092515-f1a17fdd710b // indirect
@@ -31,9 +31,8 @@ require (
 	github.com/onsi/gomega v1.8.1 // indirect
 	github.com/pascaldekloe/goe v0.1.0 // indirect
 	github.com/smartystreets/goconvey v1.6.4 // indirect
-	github.com/spf13/pflag v1.0.3 // indirect
+	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/zach-klippenstein/goregen v0.0.0-20160303162051-795b5e3961ea // indirect
 	golang.org/x/net v0.7.0 // indirect
 	golang.org/x/sys v0.7.0 // indirect
-	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
