@@ -9,7 +9,7 @@ require (
 	github.com/aws/aws-sdk-go v1.44.98
 	github.com/goadesign/goa v1.4.3
 	github.com/gofrs/uuid v3.2.0+incompatible
-	github.com/sirupsen/logrus v1.8.1
+	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/cobra v0.0.5
 )
 
