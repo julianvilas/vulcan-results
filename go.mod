@@ -8,7 +8,7 @@ require (
 	github.com/adevinta/vulcan-report v1.0.0
 	github.com/aws/aws-sdk-go v1.45.14
 	github.com/goadesign/goa v1.4.3
-	github.com/gofrs/uuid v3.2.0+incompatible
+	github.com/gofrs/uuid v4.4.0+incompatible
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/cobra v0.0.5
 )
