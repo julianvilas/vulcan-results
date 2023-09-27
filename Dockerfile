@@ -1,6 +1,6 @@
 # Copyright 2019 Adevinta
 
-FROM golang:1.21-alpine3.18 as builder
+FROM --platform=$BUILDPLATFORM golang:1.21-alpine3.18 as builder
 
 WORKDIR /app
 
@@ -8,7 +8,10 @@ COPY go.mod .
 COPY go.sum .
 RUN go mod download
 COPY . .
-RUN CGO_ENABLED=1 go install -a -tags netgo -ldflags '-w' ./...
+
+ARG TARGETOS TARGETARCH
+WORKDIR /app/cmd/vulcan-results
+RUN GOOS=$TARGETOS GOARCH=$TARGETARCH go build -tags netgo -ldflags '-w' .
 
 FROM alpine:3.18
 
@@ -21,7 +24,7 @@ ENV BUILD_RFC3339 "$BUILD_RFC3339"
 ENV COMMIT "$COMMIT"
 
 WORKDIR /app
-COPY --from=builder /go/bin/vulcan-results .
+COPY --from=builder /app/cmd/vulcan-results/vulcan-results .
 COPY config.toml .
 COPY run.sh .
 CMD ["./run.sh"]
