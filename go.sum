@@ -10,8 +10,8 @@ github.com/adevinta/vulcan-report v1.0.0 h1:44aICPZ+4svucgCSA5KmjlT3ZGzrvZXiSnkb
 github.com/adevinta/vulcan-report v1.0.0/go.mod h1:k34KaeoXc3H77WNMwI9F4F1G28hBjB95PeMUp9oHbEE=
 github.com/armon/go-metrics v0.0.0-20171117184120-7aa49fde8082 h1:nMRgtnDf0vgx26vmAxGbYXE7dVpjeB4JGf8Xxx5+yEw=
 github.com/armon/go-metrics v0.0.0-20171117184120-7aa49fde8082/go.mod h1:Q73ZrmVTwzkszR9V5SSuryQ31EELlFMUz1kKyl939pY=
-github.com/aws/aws-sdk-go v1.45.14 h1:/IPMEh9oelbK7506fdMHkbV9mq4a6f5aeiy9OT0PRKw=
-github.com/aws/aws-sdk-go v1.45.14/go.mod h1:aVsgQcEevwlmQ7qHE9I3h+dtQgpqhFB+i8Phjh7fkwI=
+github.com/aws/aws-sdk-go v1.46.0 h1:Igh7W8P+sA6mXJ9yhreOSweefLapcqekhxQlY1llxcM=
+github.com/aws/aws-sdk-go v1.46.0/go.mod h1:aVsgQcEevwlmQ7qHE9I3h+dtQgpqhFB+i8Phjh7fkwI=
 github.com/cpuguy83/go-md2man/v2 v2.0.2/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
