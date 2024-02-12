@@ -1,6 +1,6 @@
 # Copyright 2019 Adevinta
 
-FROM --platform=$BUILDPLATFORM golang:1.21-alpine3.18 as builder
+FROM --platform=$BUILDPLATFORM golang:1.22-alpine3.18 as builder
 
 WORKDIR /app
 
