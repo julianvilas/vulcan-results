@@ -9,7 +9,6 @@ package main
 import (
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"os"
 
@@ -29,7 +28,7 @@ import (
 	"github.com/adevinta/vulcan-results/storage"
 )
 
-//Config represents the configuration for vulcan-results
+// Config represents the configuration for vulcan-results
 type Config struct {
 	LogFile string
 	Port    int
@@ -123,7 +122,7 @@ func mustReadConfig() Config {
 	}
 	configFile := os.Args[1]
 
-	configData, err := ioutil.ReadFile(configFile)
+	configData, err := os.ReadFile(configFile)
 	if err != nil {
 		log.Fatalf("error: cannot read configuration file (%v)", err)
 	}

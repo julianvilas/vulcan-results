@@ -6,7 +6,7 @@ package storage
 
 import (
 	"errors"
-	"io/ioutil"
+	"io"
 	"strings"
 	"testing"
 	"time"
@@ -179,7 +179,7 @@ var testCasesGetReport = []struct {
 	config                Config
 	s3Mock                s3iface.S3API
 	date, scanID, checkID string
-	expectedReport string
+	expectedReport        string
 	expectedErr           bool
 }{
 	{
@@ -187,7 +187,7 @@ var testCasesGetReport = []struct {
 		config: baseConfig,
 		s3Mock: mockS3Client{
 			getObjectOutput: &s3.GetObjectOutput{
-				Body: ioutil.NopCloser(strings.NewReader("report")),
+				Body: io.NopCloser(strings.NewReader("report")),
 			},
 			expectedBucket: baseConfig.BucketReports,
 			expectedKey:    "dt=2019-11-16/scan=9126034c-7caf-4acd-93f3-bee1941aa140/e0c1ac1a-1036-4e0e-b5cc-d18ae6673eb0.json",
@@ -203,7 +203,7 @@ var testCasesGetReport = []struct {
 		config: baseConfig,
 		s3Mock: mockS3Client{
 			getObjectOutput: &s3.GetObjectOutput{
-				Body: ioutil.NopCloser(strings.NewReader("report")),
+				Body: io.NopCloser(strings.NewReader("report")),
 			},
 			expectedBucket: baseConfig.BucketReports,
 			expectedKey:    "dt=2019-11-16/scan=9126034c-7caf-4acd-93f3-bee1941aa140/e0c1ac1a-1036-4e0e-b5cc-d18ae6673eb0.json",
@@ -219,7 +219,7 @@ var testCasesGetReport = []struct {
 		config: baseConfig,
 		s3Mock: mockS3Client{
 			getObjectOutput: &s3.GetObjectOutput{
-				Body: ioutil.NopCloser(strings.NewReader("report")),
+				Body: io.NopCloser(strings.NewReader("report")),
 			},
 			expectedBucket: "wrong bucket",
 			expectedKey:    "dt=2019-11-16/scan=9126034c-7caf-4acd-93f3-bee1941aa140/e0c1ac1a-1036-4e0e-b5cc-d18ae6673eb0.json",
@@ -237,7 +237,7 @@ var testCasesGetLog = []struct {
 	config                Config
 	s3Mock                s3iface.S3API
 	date, scanID, checkID string
-	expectedReport string
+	expectedReport        string
 	expectedErr           bool
 }{
 	{
@@ -245,7 +245,7 @@ var testCasesGetLog = []struct {
 		config: baseConfig,
 		s3Mock: mockS3Client{
 			getObjectOutput: &s3.GetObjectOutput{
-				Body: ioutil.NopCloser(strings.NewReader("log")),
+				Body: io.NopCloser(strings.NewReader("log")),
 			},
 			expectedBucket: baseConfig.BucketLogs,
 			expectedKey:    "dt=2019-11-16/scan=9126034c-7caf-4acd-93f3-bee1941aa140/e0c1ac1a-1036-4e0e-b5cc-d18ae6673eb0.log",
@@ -261,7 +261,7 @@ var testCasesGetLog = []struct {
 		config: baseConfig,
 		s3Mock: mockS3Client{
 			getObjectOutput: &s3.GetObjectOutput{
-				Body: ioutil.NopCloser(strings.NewReader("log")),
+				Body: io.NopCloser(strings.NewReader("log")),
 			},
 			expectedBucket: baseConfig.BucketLogs,
 			expectedKey:    "dt=2019-11-16/scan=9126034c-7caf-4acd-93f3-bee1941aa140/e0c1ac1a-1036-4e0e-b5cc-d18ae6673eb0.log",
@@ -277,7 +277,7 @@ var testCasesGetLog = []struct {
 		config: baseConfig,
 		s3Mock: mockS3Client{
 			getObjectOutput: &s3.GetObjectOutput{
-				Body: ioutil.NopCloser(strings.NewReader("report")),
+				Body: io.NopCloser(strings.NewReader("report")),
 			},
 			expectedBucket: "wrong bucket",
 			expectedKey:    "dt=2019-11-16/scan=9126034c-7caf-4acd-93f3-bee1941aa140/e0c1ac1a-1036-4e0e-b5cc-d18ae6673eb0.log",
@@ -380,9 +380,7 @@ func TestGetReport(t *testing.T) {
 				t.Fatalf("expected error, got none")
 			} else if !tc.expectedErr && err != nil {
 				t.Fatalf("expected no error, got: %v", err)
-			} else
-
-			if tc.expectedReport != string(report) {
+			} else if tc.expectedReport != string(report) {
 				t.Fatalf("expected report to be '%s', got: '%s'", tc.expectedReport, string(report))
 			}
 		})
@@ -403,9 +401,7 @@ func TestGetLog(t *testing.T) {
 				t.Fatalf("expected error, got none")
 			} else if !tc.expectedErr && err != nil {
 				t.Fatalf("expected no error, got: %v", err)
-			} else
-
-			if tc.expectedReport != string(log) {
+			} else if tc.expectedReport != string(log) {
 				t.Fatalf("expected log to be '%s', got: '%s'", tc.expectedReport, string(log))
 			}
 		})

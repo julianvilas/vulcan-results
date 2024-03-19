@@ -14,14 +14,15 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"github.com/adevinta/vulcan-results/app"
-	"github.com/goadesign/goa"
-	"github.com/goadesign/goa/goatest"
 	"io"
 	"log"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
+
+	"github.com/adevinta/vulcan-results/app"
+	"github.com/goadesign/goa"
+	"github.com/goadesign/goa/goatest"
 )
 
 // ShowHealthcheckOK runs the method Show of the given controller with the given parameters.

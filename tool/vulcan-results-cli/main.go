@@ -2,13 +2,14 @@ package main
 
 import (
 	"fmt"
+	"net/http"
+	"os"
+	"time"
+
 	"github.com/adevinta/vulcan-results/client"
 	"github.com/adevinta/vulcan-results/tool/cli"
 	goaclient "github.com/goadesign/goa/client"
 	"github.com/spf13/cobra"
-	"net/http"
-	"os"
-	"time"
 )
 
 func main() {

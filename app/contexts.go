@@ -12,8 +12,9 @@ package app
 
 import (
 	"context"
-	"github.com/goadesign/goa"
 	"net/http"
+
+	"github.com/goadesign/goa"
 )
 
 // GetLogResultsContext provides the Results getLog action context.

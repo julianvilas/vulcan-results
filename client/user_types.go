@@ -11,10 +11,11 @@
 package client
 
 import (
-	"github.com/goadesign/goa"
-	uuid "github.com/goadesign/goa/uuid"
 	"time"
 	"unicode/utf8"
+
+	"github.com/goadesign/goa"
+	uuid "github.com/goadesign/goa/uuid"
 )
 
 // rawPayload user type.

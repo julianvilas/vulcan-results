@@ -11,10 +11,11 @@
 package app
 
 import (
-	"github.com/goadesign/goa"
-	uuid "github.com/gofrs/uuid"
 	"time"
 	"unicode/utf8"
+
+	"github.com/goadesign/goa"
+	uuid "github.com/gofrs/uuid"
 )
 
 // rawPayload user type.

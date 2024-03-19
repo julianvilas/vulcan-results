@@ -8,7 +8,7 @@ import (
 	"bytes"
 	"compress/gzip"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/url"
 	"path"
 	"time"
@@ -165,7 +165,7 @@ func (s *S3Storage) downloadFromBucket(bucket, key string) ([]byte, error) {
 	}
 	defer obj.Body.Close()
 
-	return ioutil.ReadAll(obj.Body)
+	return io.ReadAll(obj.Body)
 }
 
 func urlConcat(baseURL string, toConcat ...string) (string, error) {

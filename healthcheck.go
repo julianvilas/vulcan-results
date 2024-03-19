@@ -5,8 +5,8 @@ Copyright 2019 Adevinta
 package api
 
 import (
-	"github.com/goadesign/goa"
 	"github.com/adevinta/vulcan-results/app"
+	"github.com/goadesign/goa"
 )
 
 // HealthcheckController implements the healthcheck resource.
