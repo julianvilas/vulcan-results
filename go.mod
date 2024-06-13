@@ -6,7 +6,7 @@ require (
 	github.com/BurntSushi/toml v1.4.0
 	github.com/adevinta/vulcan-metrics-client v1.0.1
 	github.com/adevinta/vulcan-report v1.0.0
-	github.com/aws/aws-sdk-go v1.53.0
+	github.com/aws/aws-sdk-go v1.54.0
 	github.com/goadesign/goa v1.4.3
 	github.com/gofrs/uuid v4.4.0+incompatible
 	github.com/sirupsen/logrus v1.9.3
