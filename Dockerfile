@@ -13,7 +13,7 @@ ARG TARGETOS TARGETARCH
 
 RUN GOOS=$TARGETOS GOARCH=$TARGETARCH go build -tags netgo -ldflags '-w' ./cmd/vulcan-results
 
-FROM alpine:3.21
+FROM alpine:3.22
 
 RUN apk add --no-cache gettext ca-certificates
 
